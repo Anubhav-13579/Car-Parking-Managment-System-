@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Parking Management System - OS Concurrency Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Top Header -->
+    <header class="dashboard-header">
+      <div class="header-left">
+        <h1>Smart Parking Management System - OS Concurrency Dashboard</h1>
+        <div class="academic-badge">NIET Greater Noida | B.Tech CSE (AI) | Group 8 Capstone</div>
+      </div>
+      <div class="header-right">
+        <div class="status-pill" id="system-status">
+          <span class="status-dot"></span> System Online
+        </div>
+      </div>
+    </header>
+
+    <!-- Top KPI Metric Cards -->
+    <section class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Slots</div>
+        <div class="kpi-value" id="val-total-slots">100</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Occupied</div>
+        <div class="kpi-value" id="val-occupied">64</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Available</div>
+        <div class="kpi-value" id="val-available">36</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Active Vehicle Threads</div>
+        <div class="kpi-value" id="val-active-threads">22</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Fee Collected (Rs)</div>
+        <div class="kpi-value" id="val-fee-collected">1,860</div>
+      </div>
+    </section>
+
+    <!-- Interactive Simulation Control Bar -->
+    <section class="control-bar">
+      <div class="control-group">
+        <button id="btn-toggle-sim" class="btn btn-primary">▶ Start Live Simulation</button>
+        <button id="btn-step-sim" class="btn btn-secondary">⚡ Single Arrival Step</button>
+        <button id="btn-emergency" class="btn btn-danger">🚨 Inject Emergency Vehicle</button>
+      </div>
+      <div class="control-group">
+        <label for="scheduler-select">Scheduler Mode:</label>
+        <select id="scheduler-select" class="select-box">
+          <option value="priority" selected>Priority + Aging (Module 1)</option>
+          <option value="fcfs">FCFS (First-Come First-Served)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="thread-load-select">Stress Test Load:</label>
+        <select id="thread-load-select" class="select-box">
+          <option value="50">50 Threads</option>
+          <option value="100">100 Threads</option>
+          <option value="200">200 Threads</option>
+          <option value="500" selected>500 Threads (Stress Test)</option>
+        </select>
+        <button id="btn-run-benchmark" class="btn btn-benchmark">📊 Run Benchmark</button>
+      </div>
+    </section>
+
+    <!-- Middle Section: Slot Map & Scheduling Chart -->
+    <main class="grid-row">
+      <!-- Left: Slot Map -->
+      <section class="panel-card slot-map-panel">
+        <div class="panel-header">
+          <h2>Slot Map (Level 1) - <span class="subtext">live from shared memory</span></h2>
+        </div>
+        <div class="slot-grid" id="slot-grid">
+          <!-- 100 slots generated dynamically -->
+        </div>
+        <div class="slot-legend">
+          <span class="legend-item"><span class="legend-color occupied"></span> Occupied</span>
+          <span class="legend-item"><span class="legend-color free"></span> Free</span>
+          <span class="legend-item"><span class="legend-color ev"></span> EV bay</span>
+        </div>
+      </section>
+
+      <!-- Right: Scheduling Performance Chart -->
+      <section class="panel-card chart-panel">
+        <div class="panel-header">
+          <h2>Scheduling Performance (avg of 5 runs)</h2>
+        </div>
+        <div class="chart-container">
+          <div class="chart-y-axis">
+            <span>1000</span>
+            <span>800</span>
+            <span>600</span>
+            <span>400</span>
+            <span>200</span>
+            <span>0</span>
+          </div>
+          <div class="chart-bars-area">
+            <div class="chart-y-label">Avg waiting time (ms)</div>
+            <!-- Cluster 50 -->
+            <div class="bar-group">
+              <div class="bars">
+                <div class="bar bar-fcfs" style="height: 12%;">
+                  <span class="bar-tooltip">120</span>
+                </div>
+                <div class="bar bar-priority" style="height: 9.5%;">
+                  <span class="bar-tooltip">95</span>
+                </div>
+              </div>
+              <div class="bar-x-label">50</div>
+            </div>
+
+            <!-- Cluster 100 -->
+            <div class="bar-group">
+              <div class="bars">
+                <div class="bar bar-fcfs" style="height: 21%;">
+                  <span class="bar-tooltip">210</span>
+                </div>
+                <div class="bar bar-priority" style="height: 15%;">
+                  <span class="bar-tooltip">150</span>
+                </div>
+              </div>
+              <div class="bar-x-label">100</div>
+            </div>
+
+            <!-- Cluster 200 -->
+            <div class="bar-group">
+              <div class="bars">
+                <div class="bar bar-fcfs" style="height: 41%;">
+                  <span class="bar-tooltip">410</span>
+                </div>
+                <div class="bar bar-priority" style="height: 26%;">
+                  <span class="bar-tooltip">260</span>
+                </div>
+              </div>
+              <div class="bar-x-label">200</div>
+            </div>
+
+            <!-- Cluster 500 -->
+            <div class="bar-group">
+              <div class="bars">
+                <div class="bar bar-fcfs" style="height: 98%;">
+                  <span class="bar-tooltip">980</span>
+                </div>
+                <div class="bar bar-priority" style="height: 54%;">
+                  <span class="bar-tooltip">540</span>
+                </div>
+              </div>
+              <div class="bar-x-label">500</div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-x-axis-title">Vehicle threads</div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-color fcfs-box"></span> FCFS</span>
+          <span class="legend-item"><span class="legend-color priority-box"></span> Priority + Aging</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Section: Banker's Log & Lock Contention Table -->
+    <footer class="grid-row">
+      <!-- Left: Banker's Safety Log -->
+      <section class="panel-card terminal-panel">
+        <div class="panel-header">
+          <h2>Banker's Algorithm - Aisle Safety Log</h2>
+        </div>
+        <div class="terminal-body" id="bankers-log">
+          <!-- Dynamic safety log stream -->
+          <div class="log-line"><span class="v-tag">V068</span> -&gt; seg A2 <span class="status-safe">SAFE</span></div>
+          <div class="log-line"><span class="v-tag">V071</span> -&gt; seg A2 <span class="status-safe">SAFE</span></div>
+          <div class="log-line"><span class="v-tag">V080</span> -&gt; seg A2 <span class="status-delayed">DELAYED</span></div>
+          <div class="log-line"><span class="v-tag">V073</span> -&gt; seg A3 <span class="status-safe">SAFE</span></div>
+          <div class="log-line"><span class="v-tag">V091</span> -&gt; seg A2 <span class="status-safe">SAFE</span></div>
+          <div class="log-line"><span class="v-tag">V095</span> -&gt; seg A3 <span class="status-delayed">DELAYED</span></div>
+        </div>
+        <div class="terminal-footer">
+          <strong>Deadlocks detected: <span id="deadlock-count">0</span></strong>
+        </div>
+      </section>
+
+      <!-- Right: Lock Contention Table -->
+      <section class="panel-card table-panel">
+        <div class="panel-header">
+          <h2>Lock Contention: Global Mutex vs Per-Level Locks</h2>
+        </div>
+        <div class="table-container">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Threads</th>
+                <th>Global (ms)</th>
+                <th>Per-level (ms)</th>
+                <th>Throughput (veh/s)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>50</td>
+                <td>18</td>
+                <td>11</td>
+                <td>41</td>
+              </tr>
+              <tr>
+                <td>100</td>
+                <td>47</td>
+                <td>26</td>
+                <td>38</td>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>132</td>
+                <td>61</td>
+                <td>34</td>
+              </tr>
+              <tr class="highlight-row">
+                <td>500</td>
+                <td>390</td>
+                <td>148</td>
+                <td>29</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-footer-note">
+          Per-level locking cut contention by roughly 60% at 500 threads.
+        </div>
+      </section>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

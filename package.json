@@ -1,0 +1,13 @@
+{
+  "name": "smart-parking-os-prototype",
+  "version": "1.0.0",
+  "description": "OS - 103: Smart Parking Management System (OS Concurrency & Multithreading Framework)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node -e \"console.log('Testing prototype engine...'); require('http').get('http://localhost:3000', (res) => console.log('HTTP Status:', res.statusCode));\""
+  },
+  "keywords": ["operating-systems", "concurrency", "multithreading", "bankers-algorithm", "semaphores", "mutex", "shared-memory"],
+  "author": "Group 8 (NIET B.Tech CSE AI)",
+  "license": "MIT"
+}
