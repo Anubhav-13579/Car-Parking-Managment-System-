@@ -67,7 +67,7 @@
 ### 1. Open Project in VS Code
 Open your terminal or command prompt and run:
 ```bash
-code "C:\Users\anush\.gemini\antigravity\scratch\smart_parking_system"
+code "C:\Users\anubhav_LOQ\scratch\smart_parking_system"
 ```
 
 ### 2. Run the Live Interactive Prototype (Figure 1 Dashboard)
